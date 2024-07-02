@@ -1,43 +1,64 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import axios from "axios";
 import Header from "./Nav";
-import Footer from "./Footer";
-import landing from "../img/landing.png";
+
 import author1 from "../img/author-1.png";
 import facebook from "../img/facebook.png";
 import twitter from "../img/twitter.png";
 import articleSec from "../img/article-sec.png";
 import eyes from "../img/eyes.png";
-import article01 from "../img/article-01.png";
-import article02 from "../img/article-02.png";
-import article03 from "../img/article-03.png";
-import article12 from "../img/article-12.png";
-import article13 from "../img/article-13.png";
-import article14 from "../img/article-14.png";
 
-export default function Article() {
+export default function Article({ products }) {
   document.title = "Article Page";
+  const [product, setProduct] = useState(null);
+  const [filtered, setFiltered] = useState([]);
+  const { id } = useParams();
+  useEffect(() => {
+    axios.get(`https://fakestoreapi.com/products/${id}`).then((res) => {
+      setProduct(res.data);
+    });
+  }, [id]);
+
+  useEffect(()=> {
+    window.scrollTo(0, 0);
+    if (product && Array.isArray(products)) {
+      setFiltered(products.filter((item) => item.category === product.category && item.id !== product.id));
+    }
+  },[product, products])
+
+  if (!product) {
+    return (
+      <div className="loading-cont">
+        <div className="lds-hourglass"></div>
+      </div>
+    );
+  }
+
   return (
     <>
       <Header />
       <section className="mt-5 mx-auto text-center w-100">
         <div className="w-75 mx-auto">
           <p className="display-4 fw-bold text-center mb-3 px-1">
-            A few words about this blog platform, Ghost, and how this site was
-            made
+            {product.title}
           </p>
           <p className="text-center fs-5 ff-sf w-75 mx-auto">
-            Why Ghost (& Figma) instead of Medium, WordPress or other options?
+            {product.description}
           </p>
         </div>
-        <img src={landing} className="mt-3 w-100" alt="" />
+        <img src={product.image} className="mt-3 w-25" alt="" />
       </section>
       <article className="w-60 mx-auto">
         <div className="w-75 mx-auto">
           <span className="line w-100"></span>
           <div className="d-flex justify-content-between">
             <div className="d-flex align-items-center">
-              <img src={author1} className="rounded-circle w-3.5 me-2" />
+              <img
+                src={author1}
+                alt="..."
+                className="rounded-circle w-3.5 me-2"
+              />
               <div>
                 <h4 className="text-uppercase fw-bold fs-6">Mika MAtikainen</h4>
                 <p className="mb-0">Apr 15, 2020 · 4 min read</p>
@@ -46,10 +67,12 @@ export default function Article() {
             <div className="d-flex align-items-center justify-content-center">
               <img
                 src={facebook}
+                alt="..."
                 className="px-4 py-2 border border-1 rounded-2 w-4.5"
               />
               <img
                 src={twitter}
+                alt="..."
                 className="px-4 py-2 border border-1 rounded-2 w-4.5"
               />
             </div>
@@ -78,7 +101,7 @@ export default function Article() {
           </p>
         </div>
         <figure>
-          <img src={articleSec} />
+          <img src={articleSec} alt="..." />
           <figcaption className="w-50 text-center my-3 mx-auto">
             Image caption centered this way and I’ll make this a bit longer to
             indicate the amount of line-height.
@@ -122,7 +145,7 @@ export default function Article() {
           </p>
           <div className="fs-5 my-5 lh-170 d-flex align-items-center justify-content-center">
             <a
-              href="#"
+              href="/"
               type="button"
               className="w-50 text-black text-decoration-none fs-6 fw-medium border border-light-subtle text-center py-3 shadow-sm rounded-start"
             >
@@ -130,7 +153,7 @@ export default function Article() {
               Facebook
             </a>
             <a
-              href="#"
+              href="/"
               type="button"
               className="w-50 text-black text-decoration-none fs-6 fw-medium border border-light-subtle text-center py-3 shadow-sm rounded-end"
             >
@@ -161,77 +184,26 @@ export default function Article() {
       <section className="container my-5">
         <h2 className="display-6 fw-bold text-center">What to read next</h2>
         <div className="row my-5">
-          <Link
-            to={"/blog"}
-            className="card text-decoration-none border-0 col-sm-12 col-md-6 col-lg-4"
-          >
-            <img src={article02} className="card-img-top" />
-            <div className="card-body">
-              <p className="card-text fw-medium text-center fs-4">
-                Connecting artificial intelligence with digital product design
-              </p>
-            </div>
-          </Link>
-          <Link
-            to={"/blog"}
-            className="card text-decoration-none border-0 col-sm-12 col-md-6 col-lg-4"
-          >
-            <img src={article03} className="card-img-top" />
-            <div className="card-body">
-              <p className="card-text fw-medium text-center fs-4">
-                Hello world, or, in other words, why this blog exists
-              </p>
-            </div>
-          </Link>
-          <Link
-            to={"/blog"}
-            className="card text-decoration-none border-0 col-sm-12 col-md-6 col-lg-4"
-          >
-            <img src={article01} className="card-img-top" />
-            <div className="card-body">
-              <p className="card-text fw-medium text-center fs-4">
-                Here are some things you should know regarding how we work
-              </p>
-            </div>
-          </Link>
-          <Link
-            to={"/blog"}
-            className="card text-decoration-none border-0 col-sm-12 col-md-6 col-lg-4"
-          >
-            <img src={article13} className="card-img-top" />
-            <div className="card-body">
-              <p className="card-text fw-medium text-center fs-4">
-                A few words about this blog platform, Ghost, and how this site
-                was made
-              </p>
-            </div>
-          </Link>
-          <Link
-            to={"/blog"}
-            className="card text-decoration-none border-0 col-sm-12 col-md-6 col-lg-4"
-          >
-            <img src={article14} className="card-img-top" />
-            <div className="card-body">
-              <p className="card-text fw-medium text-center fs-4">
-                Updating list of 50+ sources on distributed teams, remote work,
-                and how to make it all work better
-              </p>
-            </div>
-          </Link>
-          <Link
-            to={"/blog"}
-            className="card text-decoration-none border-0 col-sm-12 col-md-6 col-lg-4"
-          >
-            <img src={article12} className="card-img-top" />
-            <div className="card-body">
-              <p className="card-text fw-medium text-center fs-4">
-                How modern remote working tools get along with Old School
-                Cowboy's methods
-              </p>
-            </div>
-          </Link>
+          {filtered.map((product) => (
+            <Link
+              to={`/blog/${product.id}`}
+              key={product.id}
+              className="card border-0 col-sm-12 col-md-6 col-xl-4 text-decoration-none"
+            >
+              <img
+                src={product.image}
+                alt={product.title}
+                className="card-img-top card_img"
+              />
+              <div className="card-body">
+                <p className="card-text fw-medium text-center fs-4">
+                  {product.title}
+                </p>
+              </div>
+            </Link>
+          ))}
         </div>
-        <div className="w-50 mx-auto my-5 p-5 border border-top-3 border-black border-top text-center">
+        <div className="w-50 mx-auto my-5 p-5 text-center newsletter">
           <h3 className="fs-1 fw-bold">Sign up for the newsletter</h3>
           <p className="my-3">
             If you want relevant updates occasionally, sign up for the private
@@ -243,13 +215,15 @@ export default function Article() {
               className="form-control px-3 rounded-end-0 border-black"
               placeholder="Enter your email..."
             />
-            <button type="submit" className="btn btn-dark px-4 py-3 text-nowrap text-uppercase rounded-start-0" >
+            <button
+              type="submit"
+              className="btn btn-dark px-4 py-3 text-nowrap text-uppercase rounded-start-0"
+            >
               Sign up
             </button>
           </form>
         </div>
       </section>
-      <Footer />
     </>
   );
 };

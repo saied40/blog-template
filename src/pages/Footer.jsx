@@ -15,7 +15,7 @@ export default function Footer() {
         <p>Growth</p>
       </div>
       <div className="container text-center py-5">
-        <img src={logoDark} className="w-25 mt-5 mb-4 w-sm-100 w-md-50" />
+        <img src={logoDark} alt='...' className="w-25 mt-5 mb-4 w-sm-100 w-md-50" />
         <p className="w-50 mx-auto p-5 mb-5 p-sm-0 w-sm-100">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu velit tempus erat egestas efficitur. In hac habitasse
         platea dictumst. Fusce a nunc eget ligula suscipit finibus.</p>
         <ul className="d-flex align-items-center justify-content-center gap-3 list-unstyled my-4">
